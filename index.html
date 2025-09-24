@@ -1,3 +1,94 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Joyeux Anniversaire  Marc 🥳🎉</title>
+<style>
+  body {
+    margin:0;
+    font-family: "Trebuchet MS", Arial, sans-serif;
+    text-align:center;
+    background: linear-gradient(180deg,#ffd6f7,#fff6d6,#d6f7ff);
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+  h1 { margin:20px 0; color:#ff4d6d; font-size:2em; }
+  pre {
+    white-space:pre-wrap;
+    text-align:left;
+    font-size:1.1em;
+    line-height:1.5;
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.15);
+    max-width:600px;
+  }
+  .controls{margin:20px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+  button{background:#ff4d6d;color:white;border:none;padding:10px 14px;border-radius:10px;font-weight:bold;cursor:pointer}
+  .balloon-area{position:relative;width:100%;max-width:800px;height:300px;background:#fff;border-radius:10px;overflow:hidden;margin-bottom:20px}
+  .balloon{position:absolute;bottom:-120px;width:80px;height:120px;border-radius:50% 50% 45% 45%;display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;transform-origin:center bottom}
+  .balloon::after{content:"";position:absolute;left:50%;transform:translateX(-50%);width:2px;height:36px;background:rgba(0,0,0,0.1);bottom:-34px}
+  .popped{opacity:0;transform:scale(0.2) rotate(-30deg);transition:all .35s ease}
+  .floating{animation:floatUp linear infinite}
+  @keyframes floatUp{from{transform:translateY(0)}to{transform:translateY(-520px)}}
+  .gifts{
+    position:relative; /* ✅ indispensable pour que les cadeaux apparaissent */
+    height:220px;
+    margin:20px auto;
+    max-width:600px;
+    border-radius:10px;
+    background:#f9f9f9;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden
+  }
+  .gift{
+    width:60px;
+    height:60px;
+    background:#ff6b81;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    font-weight:800;
+    cursor:pointer;
+    position:absolute; /* nécessaire */
+    transform:translate(-50%,-50%)
+  }
+  .hidden-note{display:none;margin-top:10px;padding:10px;background:#e8ffe8;border-radius:8px}
+  canvas#confetti{position:fixed;left:0;top:0;pointer-events:none}
+</style>
+</head>
+<body>
+  <h1>🎂 Joyeux anniversaire  Marc 🥳🎁🎂</h1>
+  <pre>
+Mon très cher cousin,  
+Aujourd'hui c'est ton anniversaire.  
+
+Je me souviens de tellement de souvenirs en 15 ans,  
+Que ce soit avec Marie, Geneviève ou Véronique, je m'en souviens.  
+
+Je serai toujours là pour toi,  
+Puisque après tout, ça sert à ça un cousin !! 🎉
+  </pre>
+
+  <div class="controls">
+    <button id="spawnBalloon">🎈 Lâcher des ballons</button>
+    <button id="resetGame">🔎 Rejouer au jeu</button>
+  </div>
+  <div class="balloon-area" id="balloonArea"></div>
+
+  <h2>Mini-jeu 🎁 Trouve les 3 cadeaux !</h2>
+  <div class="gifts" id="giftsArea"></div>
+  <div class="hidden-note" id="winNote">Bravo !! 🎉 Tu as trouvé tous les cadeaux !</div>
+
+  <canvas id="confetti"></canvas>
 
 <script>
 const rand=(a,b)=>Math.random()*(b-a)+a;
