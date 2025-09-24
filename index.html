@@ -1,0 +1,27 @@
+
+<script>
+const rand=(a,b)=>Math.random()*(b-a)+a;
+
+/* Confetti */
+const confettiCanvas=document.getElementById('confetti');
+const ctx=confettiCanvas.getContext('2d');
+function resizeCanvas(){confettiCanvas.width=window.innerWidth;confettiCanvas.height=window.innerHeight;}
+resizeCanvas();window.addEventListener('resize',resizeCanvas);
+let confettiParticles=[];
+function spawnConfetti(x,y,n=60){for(let i=0;i<n;i++){confettiParticles.push({x:x+rand(-30,30),y:y+rand(-10,10),vx:rand(-5,5),vy:rand(-10,-2),size:rand(4,8),color:`hsl(${Math.floor(rand(0,360))},80%,60%)`,life:rand(40,100)});}}
+function runConfetti(){ctx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);for(let i=confettiParticles.length-1;i>=0;i--){const p=confettiParticles[i];p.vy+=0.2;p.x+=p.vx;p.y+=p.vy;p.life--;ctx.fillStyle=p.color;ctx.fillRect(p.x,p.y,p.size,p.size*0.6);if(p.life<=0||p.y>confettiCanvas.height)confettiParticles.splice(i,1);}requestAnimationFrame(runConfetti);}runConfetti();
+
+/* Ballons */
+const balloonArea=document.getElementById('balloonArea');
+const colors=['#ff6b6b','#ffb86b','#6bd6ff','#b36bff','#6bffb8'];
+function createBalloon(xPercent){const el=document.createElement('div');el.className='balloon floating';const color=colors[Math.floor(Math.random()*colors.length)];el.style.background=color;el.style.left=xPercent+'%';const dur=rand(8,14);el.style.animationDuration=dur+'s';el.textContent='🎈';balloonArea.appendChild(el);el.addEventListener('click',(e)=>{if(el.classList.contains('popped'))return;el.classList.add('popped');spawnConfetti(e.clientX,e.clientY,30);setTimeout(()=>el.remove(),400);});setTimeout(()=>{if(document.body.contains(el))el.remove();},dur*1000);}
+document.getElementById('spawnBalloon').addEventListener('click',()=>{for(let i=0;i<6;i++){setTimeout(()=>createBalloon(rand(10,90)),i*150);}});
+
+/* Gifts game */
+const giftsArea=document.getElementById('giftsArea');const winNote=document.getElementById('winNote');let found=0;
+function placeGifts(){giftsArea.innerHTML='';found=0;winNote.style.display='none';for(let i=0;i<3;i++){const g=document.createElement('div');g.className='gift';g.style.left=rand(10,90)+'%';g.style.top=rand(10,90)+'%';g.textContent='🎁';g.addEventListener('click',(e)=>{if(g.dataset.found)return;g.dataset.found=1;spawnConfetti(e.clientX,e.clientY,50);found++;g.style.opacity='0.3';if(found===3){winNote.style.display='block';spawnConfetti(window.innerWidth/2,window.innerHeight/3,200);}});giftsArea.appendChild(g);}}
+document.getElementById('resetGame').addEventListener('click',placeGifts);
+placeGifts();
+</script>
+</body>
+</html>
